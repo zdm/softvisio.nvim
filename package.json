@@ -1,0 +1,16 @@
+{
+    "name": "softvisio-cli.nvim",
+    "version": "0.0.0",
+    "private": true,
+    "homepage": "https://github.com/zdm/dotfiles-public",
+    "bugs": {
+        "url": "https://github.com/zdm/dotfiles-public/issues",
+        "email": "root <root@softvisio.net>"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/zdm/dotfiles-public.git"
+    },
+    "license": "Proprietary Software",
+    "author": "root <root@softvisio.net>"
+}
