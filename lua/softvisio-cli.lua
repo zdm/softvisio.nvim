@@ -15,6 +15,10 @@ local function get_client ()
 end
 
 -- public
+M.setup = function ( options )
+    vim.print( options )
+end
+
 M.attach = function ( bufnr )
     local client = get_client()
 
