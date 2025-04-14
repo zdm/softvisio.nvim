@@ -96,7 +96,7 @@ M.lint = function ( bufnr )
 
     -- buffer is empty
     if buffer == "" then
-        M.echo( "Buffer is empty", "Comment" )
+        utils.echo( "Buffer is empty", "Comment" )
 
         return
     end
@@ -106,7 +106,7 @@ M.lint = function ( bufnr )
         buffer = buffer .. eol
     end
 
-    M.echo( action .. ":  run source filter..." )
+    utils.echo( action .. ":  run source filter..." )
 
     local res = do_request( bufnr, "softvisio-cli/lint", {
         action = action,
@@ -117,7 +117,7 @@ M.lint = function ( bufnr )
     } )
 
     if not res then
-        M.echoe( "Not connected to the LSP server" )
+        utils.echoe( "Not connected to the LSP server" )
 
         return
     end
@@ -166,22 +166,22 @@ M.lint = function ( bufnr )
 
     --  parsing error
     if res.meta.parsingError then
-        M.echoe( action .. ": " .. res.status_text )
+        utils.echoe( action .. ": " .. res.status_text )
 
         require( "trouble" ).open( "diagnostics" )
         require( "trouble" ).focus()
 
     -- errors
     elseif res.meta.hasErrors then
-        M.echoe( action .. ": " .. res.status_text )
+        utils.echoe( action .. ": " .. res.status_text )
 
     -- warnings
     elseif res.meta.hasWarnings then
-        M.echow( action .. ": " .. res.status_text )
+        utils.echow( action .. ": " .. res.status_text )
 
     -- ok
     else
-        M.echoc( action .. ": " .. res.status_text )
+        utils.echoc( action .. ": " .. res.status_text )
     end
 
 end
