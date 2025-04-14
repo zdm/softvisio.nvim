@@ -108,7 +108,7 @@ M.lint = function ( bufnr )
 
     utils.echo( action .. ":  run source filter..." )
 
-    local res = do_request( bufnr, "softvisio/lint", {
+    local res = do_request( bufnr, "softvisio/lint-file", {
         action = action,
         cwd = vim.fn.getcwd(),
         path = vim.fn.expand( "%:p" ),
@@ -184,6 +184,9 @@ M.lint = function ( bufnr )
         utils.echoc( action .. ": " .. res.status_text )
     end
 
+end
+
+M.browser_print = function ( bufnr )
 end
 
 vim.keymap.set( { "n", "i" }, "<Leader>z", function ()
