@@ -77,7 +77,6 @@ M.attach = function ( bufnr )
     return vim.lsp.buf_attach_client( bufnr, client )
 end
 
--- client:supports_method( "textDocument/formatting" )
 -- XXX
 M.lint = function ( bufnr )
 
@@ -186,8 +185,8 @@ M.browser_print = function ( bufnr )
 
     do_request( bufnr, "softvisio/browser-print", {
         data = buffer,
-        encoding = "&encoding",
-        font = "&gfn",
+        encoding = vim.bo[ bufnr ].encoding,
+        font = vim.go.gfn,
     } )
 end
 
