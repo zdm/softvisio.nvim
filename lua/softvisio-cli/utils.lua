@@ -26,7 +26,7 @@ M.setDiagnostic = function ( bufnr, diagnostic )
 
     -- vim.diagnostic.config( options, namespace )
 
-    if diagnostic == vim.NIL then
+    if diagnostic == nil then
         vim.diagnostic.reset( namespace, bufnr )
 
         require( "trouble" ).close( "diagnostics" );

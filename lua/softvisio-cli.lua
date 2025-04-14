@@ -113,10 +113,26 @@ M.lint = function ( bufnr )
             utils.parseTreesitter()
         end
 
+        -- refresh syntax, if used
+        if syntax then
+            vim.bo[ bufnr ].syntax = "on"
+            vim.cmd( "syn sync fromstart" )
+        end
+
+        -- restore cursor position
+        vim.fn.setpos( ".", cursor_pos )
+
+        -- open fold under the cursor
+        vim.wo[ winid ].foldmethod = foldmethod
+        vim.cmd.normal( "zM" )
+        vim.cmd.normal( "zv" )
+
+        -- center cursor on the screen
+        vim.cmd.normal( "zz" )
     end
 
     -- update diagnostics
-    -- utils.setDiagnostic( 0, res.meta.diagnostic )
+    utils.setDiagnostic( 0, res.meta.diagnostic )
 
     --  parsing error
     if res.meta.parsingError then
