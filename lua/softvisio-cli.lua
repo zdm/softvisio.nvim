@@ -1,5 +1,8 @@
 local M = {}
 
+local HOSTNAME = "127.0.0.1"
+local PORT = 55557
+
 local utils = require( "softvisio-cli/utils" )
 
 local TYPES = {
@@ -23,7 +26,7 @@ local function get_client ()
     if not client then
         client = vim.lsp.start( {
             name = "softvisio-cli",
-            cmd = vim.lsp.rpc.connect( "127.0.0.1", 55557 ),
+            cmd = vim.lsp.rpc.connect( HOSTNAME, PORT ),
         } )
     end
 
