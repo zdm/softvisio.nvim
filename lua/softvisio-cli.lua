@@ -1,6 +1,6 @@
 local M = {}
 
-local utils = require( "utils" )
+local utils = require( "softvisio-cli/utils" )
 
 local TYPES = {
     javascript = "text/javascript",
@@ -94,10 +94,7 @@ M.lint = function ( bufnr )
 
     -- buffer was changed
     if res.meta.isModified then
-
-        -- XXX
-        res.data = vim.fn.substitute( res.data, "\r\n\\?", "\n", "g" )
-
+        local lines = vim.fn.split( res.data, "\r\n\\|\r\\|\n" )
         local cursor_pos = vim.fn.getpos( "." )
         local syntax = vim.bo[ bufnr ].syntax == "on" and true or false
         local foldmethod = vim.wo[ winid ].foldmethod
@@ -108,9 +105,8 @@ M.lint = function ( bufnr )
 
         vim.wo[ winid ].foldmethod = "manual"
 
-        vim.cmd( "%delete" )
-        vim.api.nvim_buf_set_lines( bufnr, 0, 0, false, { res.data } )
-        vim.cmd( "1delete 1" )
+        vim.api.nvim_buf_set_lines( bufnr, 0, -1, false, {} )
+        vim.api.nvim_buf_set_lines( bufnr, 0, #lines, false, lines )
 
         -- refresh treesitter, if used
         if utils.hasTreesitter() then
