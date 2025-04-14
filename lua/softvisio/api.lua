@@ -29,10 +29,10 @@ end
 
 -- public
 -- XXX
-function M.lint ( bufnr )
-
-    -- XXX
-    local action = "lint"
+function M.lint ( bufnr, action )
+    if not action then
+        action = "lint"
+    end
 
     local winid = vim.fn.bufwinid( bufnr )
     local buffer = utils.get_buffer( bufnr )
@@ -124,7 +124,7 @@ function M.lint ( bufnr )
 
 end
 
-function M.browser_print ( bufnr )
+function M.browser ( bufnr )
     local buffer = utils.get_buffer( bufnr )
 
     -- buffer is empty
@@ -134,7 +134,7 @@ function M.browser_print ( bufnr )
         return
     end
 
-    do_request( bufnr, "softvisio/browser-print", {
+    do_request( bufnr, "softvisio/browser", {
         data = buffer,
         encoding = vim.o.encoding,
         font = vim.g.gfn,
