@@ -3,7 +3,7 @@ local M = {}
 local HOSTNAME = "127.0.0.1"
 local PORT = 55557
 
-local utils = require( "softvisio-cli/utils" )
+local utils = require( "softvisio/utils" )
 
 local TYPES = {
     javascript = "text/javascript",
@@ -53,7 +53,7 @@ end
 local function get_client ()
     if not client then
         client = vim.lsp.start( {
-            name = "softvisio-cli",
+            name = "softvisio",
             cmd = vim.lsp.rpc.connect( HOSTNAME, PORT ),
         } )
     end
@@ -108,7 +108,7 @@ M.lint = function ( bufnr )
 
     utils.echo( action .. ":  run source filter..." )
 
-    local res = do_request( bufnr, "softvisio-cli/lint", {
+    local res = do_request( bufnr, "softvisio/lint", {
         action = action,
         cwd = vim.fn.getcwd(),
         path = vim.fn.expand( "%:p" ),
