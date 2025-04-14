@@ -1,10 +1,10 @@
-local M = {}
+local M = {
+    setup = function ( options )
+        require( "softvisio/config" ).setup( options )
 
-function M.setup ( options )
-    require( "softvisio/config" ).setup( options )
-
-    require( "softvisio/commands" ).setup( options )
-end
+        require( "softvisio/commands" ).setup( options )
+    end,
+}
 
 return setmetatable( M, {
     __index = function( _, k )

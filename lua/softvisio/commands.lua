@@ -1,26 +1,17 @@
 local api = require( "softvisio/api" )
 local utils = require( "softvisio/utils" )
-local M = {}
 
-function M.setup ()
-    vim.api.nvim_create_user_command( "S", M.execute, {
-        nargs = "*",
-        complete = M.complete,
-        desc = "Softvisio LSP",
-    } )
-end
-
-function M.execute ( input )
+local function execute ( input )
 
     if not input.fargs[ 1 ] then
         utils.echoe( "Command is required" )
 
     -- lint
-    elseif ( input.fargs[ 1 ] == "lint" ) then
+    elseif input.fargs[ 1 ] == "lint" then
         api.lint( 0, input.fargs[ 2 ] )
 
     -- browser
-    elseif ( input.fargs[ 1 ] == "browser" ) then
+    elseif input.fargs[ 1 ] == "browser" then
         api.browser( 0 )
 
     -- invalid command
@@ -29,7 +20,17 @@ function M.execute ( input )
     end
 end
 
-function M.complete ( ... )
+local function complete ( ... )
 end
+
+local M = {
+    setup = function ()
+        vim.api.nvim_create_user_command( "S", execute, {
+            nargs = "*",
+            complete = complete,
+            desc = "Softvisio LSP",
+        } )
+    end,
+}
 
 return M
