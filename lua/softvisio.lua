@@ -13,12 +13,6 @@ local TYPES = {
     ant = "text/xml",
 }
 
-local EOL = {
-    unix = "\n",
-    dos = "\r\n",
-    mac = "\r",
-}
-
 local LSP_SERVER
 local client
 
@@ -91,19 +85,13 @@ M.lint = function ( bufnr )
     local action = "lint"
 
     local winid = vim.fn.bufwinid( bufnr )
-    local eol = EOL[ vim.bo[ bufnr ].fileformat ]
-    local buffer = vim.fn.join( vim.fn.getline( 1, "$" ), eol )
+    local buffer = utils.get_buffer( bufnr )
 
     -- buffer is empty
     if buffer == "" then
         utils.echo( "Buffer is empty", "Comment" )
 
         return
-    end
-
-    -- add final newline
-    if not vim.b[ bufnr ].editorconfig or vim.b[ bufnr ].editorconfig.insert_final_newline == "true" then
-        buffer = buffer .. eol
     end
 
     utils.echo( action .. ":  run source filter..." )
@@ -187,6 +175,20 @@ M.lint = function ( bufnr )
 end
 
 M.browser_print = function ( bufnr )
+    local buffer = utils.get_buffer( bufnr )
+
+    -- buffer is empty
+    if buffer == "" then
+        utils.echo( "Buffer is empty", "Comment" )
+
+        return
+    end
+
+    do_request( bufnr, "softvisio/browser-print", {
+        data = buffer,
+        encoding = "&encoding",
+        font = "&gfn",
+    } )
 end
 
 vim.keymap.set( { "n", "i" }, "<Leader>z", function ()

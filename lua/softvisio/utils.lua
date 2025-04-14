@@ -1,3 +1,9 @@
+local EOL = {
+    unix = "\n",
+    dos = "\r\n",
+    mac = "\r",
+}
+
 local M = {}
 
 M.hasTreesitter = function ( bufnr )
@@ -63,6 +69,21 @@ end
 
 M.echow = function ( message )
     M.echo( message, "WarningMsg" )
+end
+
+M.get_buffer = function ( bufnr )
+    local eol = EOL[ vim.bo[ bufnr ].fileformat ]
+    local buffer = vim.fn.join( vim.fn.getline( 1, "$" ), eol )
+
+    if buffer ~= "" then
+
+        -- add final newline
+        if not vim.b[ bufnr ].editorconfig or vim.b[ bufnr ].editorconfig.insert_final_newline == "true" then
+            buffer = buffer .. eol
+        end
+    end
+
+    return buffer
 end
 
 return M
