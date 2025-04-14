@@ -1,63 +1,20 @@
-local M = {}
-
-local HOSTNAME = "127.0.0.1"
-local PORT = 55557
-
+local client = require( "softvisio/client" )
 local utils = require( "softvisio/utils" )
-
-local TYPES = {
+local types = {
     javascript = "text/javascript",
     typescript = "application/x-typescript",
     json = "application/json",
     sh = "application/x-sh",
     ant = "text/xml",
 }
-
-local LSP_SERVER
-local client
+local M = {}
 
 -- private
-local function spawn_lsp_server ()
-    if not LSP_SERVER then
-
-        -- https://neovim.io/doc/user/lua.html#vim.system()
-        -- https://neovim.io/doc/user/luvref.html#uv.spawn()
-        -- https://neovim.io/doc/user/luvref.html#uv.tcp_connect()
-        local handle, pid = vim.uv.spawn(
-            vim.fn.has( "win32" ) == 1 and "softvisio-cli.cmd" or "softvisio-cli",
-            {
-                args = { "lsp", "start" },
-                stdio = nil,
-                detached = false,
-                hide = true,
-            },
-            function ( code, signal )
-                vim.print( "---", code, signal )
-                LSP_SERVER = nil
-            end
-        )
-
-        LSP_SERVER = {
-            handle = handle,
-            pid = pid,
-        }
-    end
-end
-
-local function get_client ()
-    if not client then
-        client = vim.lsp.start( {
-            name = "softvisio",
-            cmd = vim.lsp.rpc.connect( HOSTNAME, PORT ),
-        } )
-    end
-
-    return client
+function attach ( bufnr )
+    return vim.lsp.buf_attach_client( bufnr, client.get() )
 end
 
 local function do_request ( bufnr, method, params )
-    local client = get_client()
-
     local res = vim.lsp.buf_request_sync( bufnr, method, params )
 
     if not res then
@@ -67,18 +24,9 @@ local function do_request ( bufnr, method, params )
     end
 end
 
-function attach ( bufnr )
-    local client = get_client()
-
-    return vim.lsp.buf_attach_client( bufnr, client )
-end
-
 -- public
-M.setup = function ( options )
-end
-
 -- XXX
-M.lint = function ( bufnr )
+function M.lint ( bufnr )
 
     -- XXX
     local action = "lint"
@@ -99,7 +47,7 @@ M.lint = function ( bufnr )
         action = action,
         cwd = vim.fn.getcwd(),
         path = vim.fn.expand( "%:p" ),
-        type = TYPES[ vim.bo[ bufnr ].filetype ],
+        type = types[ vim.bo[ bufnr ].filetype ],
         buffer = buffer,
     } )
 
@@ -173,7 +121,7 @@ M.lint = function ( bufnr )
 
 end
 
-M.browser_print = function ( bufnr )
+function M.browser_print ( bufnr )
     local buffer = utils.get_buffer( bufnr )
 
     -- buffer is empty
@@ -189,15 +137,5 @@ M.browser_print = function ( bufnr )
         font = vim.go.gfn,
     } )
 end
-
-vim.keymap.set( { "n", "i" }, "<Leader>z", function ()
-    local bufnr = vim.api.nvim_get_current_buf()
-
-    -- spawn_lsp_server()
-
-    attach( bufnr )
-
-    M.lint( bufnr )
-end )
 
 return M;
