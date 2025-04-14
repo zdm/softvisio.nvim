@@ -140,7 +140,7 @@ M = {
             return
         end
 
-        do_request( bufnr, "softvisio/browser", {
+        do_request( bufnr, "softvisio/open-browser", {
             data = buffer,
             encoding = vim.o.encoding,
             font = vim.g.gfn,
