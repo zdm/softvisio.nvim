@@ -67,14 +67,14 @@ local function do_request ( bufnr, method, params )
     end
 end
 
--- public
-M.setup = function ( options )
-end
-
-M.attach = function ( bufnr )
+function attach ( bufnr )
     local client = get_client()
 
     return vim.lsp.buf_attach_client( bufnr, client )
+end
+
+-- public
+M.setup = function ( options )
 end
 
 -- XXX
@@ -195,7 +195,7 @@ vim.keymap.set( { "n", "i" }, "<Leader>z", function ()
 
     -- spawn_lsp_server()
 
-    M.attach( bufnr )
+    attach( bufnr )
 
     M.lint( bufnr )
 end )
