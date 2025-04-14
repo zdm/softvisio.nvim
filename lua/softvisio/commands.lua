@@ -12,8 +12,11 @@ end
 
 function M.execute ( input )
 
+    if not input.fargs[ 1 ] then
+        utils.echoe( "Command is required" )
+
     -- lint
-    if ( input.fargs[ 1 ] == "lint" ) then
+    elseif ( input.fargs[ 1 ] == "lint" ) then
         api.lint( 0, input.fargs[ 2 ] )
 
     -- browser
@@ -22,7 +25,7 @@ function M.execute ( input )
 
     -- invalid command
     else
-        echoe( "Command is not valid" )
+        utils.echoe( "Command is not valid: " .. input.fargs[ 1 ] )
     end
 end
 
