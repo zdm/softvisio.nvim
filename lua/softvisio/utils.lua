@@ -3,8 +3,9 @@ local EOL = {
     dos = "\r\n",
     mac = "\r",
 }
+local M
 
-local M = {
+M = {
     hasTreesitter = function ( bufnr )
         if not bufnr then
             bufnr = vim.api.nvim_get_current_buf()

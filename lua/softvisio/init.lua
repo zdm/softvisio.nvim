@@ -1,4 +1,6 @@
-local M = {
+local M
+
+M = {
     setup = function ( options )
         require( "softvisio/config" ).setup( options )
 

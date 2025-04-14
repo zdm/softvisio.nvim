@@ -7,6 +7,7 @@ local types = {
     sh = "application/x-sh",
     ant = "text/xml",
 }
+local M
 
 function attach ( bufnr )
     return vim.lsp.buf_attach_client( bufnr, client.get() )
@@ -25,7 +26,7 @@ local function do_request ( bufnr, method, params )
     end
 end
 
-local M = {
+M = {
     lint = function ( bufnr, action )
         if not bufnr or bufnr == 0 then
             bufnr = vim.api.nvim_get_current_buf()

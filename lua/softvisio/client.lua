@@ -1,6 +1,7 @@
 local config = require( "softvisio/config" )
 local server
 local client
+local M
 
 -- XXX
 local function spawnLspServer ()
@@ -30,7 +31,7 @@ local function spawnLspServer ()
     end
 end
 
-local M = {
+M = {
     get = function ()
         if not client then
             client = vim.lsp.start( {

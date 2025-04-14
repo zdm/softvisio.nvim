@@ -1,5 +1,6 @@
 local api = require( "softvisio/api" )
 local utils = require( "softvisio/utils" )
+local M
 
 local function execute ( input )
 
@@ -23,7 +24,7 @@ end
 local function complete ( ... )
 end
 
-local M = {
+M = {
     setup = function ()
         vim.api.nvim_create_user_command( "S", execute, {
             nargs = "*",
