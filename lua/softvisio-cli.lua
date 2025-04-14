@@ -44,6 +44,20 @@ local function echo ( message, hl )
     end
 end
 
+-- XXX
+local function do_request ( bufnr, method, params )
+    local client = get_client()
+
+    local res = vim.lsp.buf_request_sync( bufnr, method, params )
+
+    -- XXX
+    if not res then
+        return
+    else
+        return res[ 1 ].result
+    end
+end
+
 -- public
 M.setup = function ( options )
 end
@@ -57,8 +71,11 @@ end
 -- client:supports_method( "textDocument/formatting" )
 -- XXX
 M.lint = function ( bufnr )
-    local winid = vim.fn.bufwinid( bufnr )
+
+    -- XXX
     local action = "lint"
+
+    local winid = vim.fn.bufwinid( bufnr )
     local eol = EOL[ vim.bo[ bufnr ].fileformat ]
     local buffer = vim.fn.join( vim.fn.getline( 1, "$" ), eol )
 
@@ -69,16 +86,14 @@ M.lint = function ( bufnr )
         return
     end
 
-    -- XXX
-    -- insert final newline
-    -- if !exists( "b:editorconfig" ) || type( b:editorconfig ) != v:t_dict || b:editorconfig.insert_final_newline == "true"
-    buffer = buffer .. eol
+    -- add final newline
+    if not vim.b[ bufnr ].editorconfig or vim.b[ bufnr ].editorconfig.insert_final_newline == "true" then
+        buffer = buffer .. eol
+    end
 
     echo( action .. ":  run source filter..." )
 
-    local client = get_client()
-
-    local res = vim.lsp.buf_request_sync( bufnr, "softvisio-cli/lint", {
+    local res = do_request( bufnr, "softvisio-cli/lint", {
         action = action,
         cwd = vim.fn.getcwd(),
         path = vim.fn.expand( "%:p" ),
@@ -86,11 +101,8 @@ M.lint = function ( bufnr )
         buffer = buffer,
     } )
 
-    if not res then
-        return
-    end
-
-    res = res[ 1 ].result
+    -- XXX
+    if not res then return end
 
     -- buffer was changed
     if res.meta.isModified then
