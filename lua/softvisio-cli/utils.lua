@@ -39,4 +39,30 @@ M.setDiagnostic = function ( bufnr, diagnostic )
     end
 end
 
+M.echo = function ( message, hl )
+    vim.cmd( "silent! redraw" )
+
+    if hl then
+        vim.cmd.echohl( hl )
+    end
+
+    vim.cmd.echo( '"' .. message .. '"' )
+
+    if hl then
+        vim.cmd.echohl( "None" )
+    end
+end
+
+M.echoc = function ( message )
+    M.echo( message, "Comment" )
+end
+
+M.echoe = function ( message )
+    M.echo( message, "ErrorMsg" )
+end
+
+M.echow = function ( message )
+    M.echo( message, "WarningMsg" )
+end
+
 return M

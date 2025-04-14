@@ -19,9 +19,37 @@ local EOL = {
     mac = "\r",
 }
 
+local LSP_SERVER
 local client
 
 -- private
+local function spawn_lsp_server ()
+    if not LSP_SERVER then
+
+        -- https://neovim.io/doc/user/lua.html#vim.system()
+        -- https://neovim.io/doc/user/luvref.html#uv.spawn()
+        -- https://neovim.io/doc/user/luvref.html#uv.tcp_connect()
+        local handle, pid = vim.uv.spawn(
+            vim.fn.has( "win32" ) == 1 and "softvisio-cli.cmd" or "softvisio-cli",
+            {
+                args = { "lsp", "start" },
+                stdio = nil,
+                detached = false,
+                hide = true,
+            },
+            function ( code, signal )
+                vim.print( "---", code, signal )
+                LSP_SERVER = nil
+            end
+        )
+
+        LSP_SERVER = {
+            handle = handle,
+            pid = pid,
+        }
+    end
+end
+
 local function get_client ()
     if not client then
         client = vim.lsp.start( {
@@ -33,27 +61,11 @@ local function get_client ()
     return client
 end
 
-local function echo ( message, hl )
-    -- vim.cmd( "silent! redraw" )
-
-    if hl then
-        vim.cmd.echohl( hl )
-    end
-
-    vim.cmd.echo( '"' .. message .. '"' )
-
-    if hl then
-        vim.cmd.echohl( "None" )
-    end
-end
-
--- XXX
 local function do_request ( bufnr, method, params )
     local client = get_client()
 
     local res = vim.lsp.buf_request_sync( bufnr, method, params )
 
-    -- XXX
     if not res then
         return
     else
@@ -84,7 +96,7 @@ M.lint = function ( bufnr )
 
     -- buffer is empty
     if buffer == "" then
-        echo( "Buffer is empty", "Comment" )
+        M.echo( "Buffer is empty", "Comment" )
 
         return
     end
@@ -94,7 +106,7 @@ M.lint = function ( bufnr )
         buffer = buffer .. eol
     end
 
-    echo( action .. ":  run source filter..." )
+    M.echo( action .. ":  run source filter..." )
 
     local res = do_request( bufnr, "softvisio-cli/lint", {
         action = action,
@@ -104,8 +116,11 @@ M.lint = function ( bufnr )
         buffer = buffer,
     } )
 
-    -- XXX
-    if not res then return end
+    if not res then
+        M.echoe( "Not connected to the LSP server" )
+
+        return
+    end
 
     -- buffer was changed
     if res.meta.isModified then
@@ -151,28 +166,30 @@ M.lint = function ( bufnr )
 
     --  parsing error
     if res.meta.parsingError then
-        echo( action .. ": " .. res.status_text, "ErrorMsg" )
+        M.echoe( action .. ": " .. res.status_text )
 
         require( "trouble" ).open( "diagnostics" )
         require( "trouble" ).focus()
 
     -- errors
     elseif res.meta.hasErrors then
-        echo( action .. ": " .. res.status_text, "ErrorMsg" )
+        M.echoe( action .. ": " .. res.status_text )
 
     -- warnings
     elseif res.meta.hasWarnings then
-        echo( action .. ": " .. res.status_text, "WarningMsg" )
+        M.echow( action .. ": " .. res.status_text )
 
     -- ok
     else
-        echo( action .. ": " .. res.status_text, "Comment" )
+        M.echoc( action .. ": " .. res.status_text )
     end
 
 end
 
 vim.keymap.set( { "n", "i" }, "<Leader>z", function ()
     local bufnr = vim.api.nvim_get_current_buf()
+
+    -- spawn_lsp_server()
 
     M.attach( bufnr )
 
