@@ -14,7 +14,10 @@ function attach ( bufnr )
     return vim.lsp.buf_attach_client( bufnr, client.get() )
 end
 
+-- XXX attach
 local function do_request ( bufnr, method, params )
+    attach( bufnr )
+
     local res = vim.lsp.buf_request_sync( bufnr, method, params )
 
     if not res then
@@ -133,8 +136,8 @@ function M.browser_print ( bufnr )
 
     do_request( bufnr, "softvisio/browser-print", {
         data = buffer,
-        encoding = vim.bo[ bufnr ].encoding,
-        font = vim.go.gfn,
+        encoding = vim.o.encoding,
+        font = vim.g.gfn,
     } )
 end
 
