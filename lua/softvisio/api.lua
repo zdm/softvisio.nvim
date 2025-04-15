@@ -13,7 +13,6 @@ function attach ( bufnr )
     return vim.lsp.buf_attach_client( bufnr, client.get() )
 end
 
--- XXX attach
 local function do_request ( bufnr, method, params )
     attach( bufnr )
 
@@ -25,6 +24,16 @@ local function do_request ( bufnr, method, params )
         return res[ 1 ].result
     end
 end
+
+vim.api.nvim_create_autocmd( { "BufFilePost", "BufRead", "BufNewFile", "BufWritePost" }, {
+    -- group = "softvisio",
+    desc = "softvisio: attach",
+    callback = function ( args )
+        local bufnr = args.buf
+
+        attach( bufnr )
+    end,
+} )
 
 M = {
     lint = function ( bufnr, action )
