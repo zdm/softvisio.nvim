@@ -32,16 +32,42 @@ local function spawnLspServer ()
 end
 
 M = {
+    setup = function ()
+        if config.auto_attach then
+            vim.api.nvim_create_autocmd( { "BufFilePost", "BufRead", "BufNewFile", "BufWritePost" }, {
+                -- group = "softvisio",
+                desc = "softvisio: attach",
+                callback = function ( args )
+                    local bufnr = args.buf
+
+                    M.attach( bufnr )
+                end,
+            } )
+
+        end
+    end,
+
     get = function ()
         if not client then
-            client = vim.lsp.start( {
+            client = vim.lsp.get_client_by_id( vim.lsp.start( {
                 name = "softvisio",
                 cmd = vim.lsp.rpc.connect( config.hostname, config.port ),
-            } )
+                on_error = function ( code, err )
+                    if err == "ECONNRESET" then
+                        vim.lsp.stop_client( client.id, true )
+
+                        client = nil
+                    end
+                end
+            } ) )
         end
 
         return client
-    end
+    end,
+
+    attach = function ( bufnr )
+        vim.lsp.buf_attach_client( bufnr, M.get().id )
+    end,
 }
 
 return M

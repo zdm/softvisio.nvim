@@ -4,7 +4,9 @@ M = {
     setup = function ( options )
         require( "softvisio/config" ).setup( options )
 
-        require( "softvisio/commands" ).setup( options )
+        require( "softvisio/commands" ).setup()
+
+        require( "softvisio/client" ).setup()
     end,
 }
 

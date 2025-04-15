@@ -9,31 +9,15 @@ local types = {
 }
 local M
 
-function attach ( bufnr )
-    return vim.lsp.buf_attach_client( bufnr, client.get() )
-end
-
 local function do_request ( bufnr, method, params )
-    attach( bufnr )
-
-    local res = vim.lsp.buf_request_sync( bufnr, method, params )
+    local res = client.get().request_sync( method, params )
 
     if not res then
         return
     else
-        return res[ 1 ].result
+        return res.result
     end
 end
-
-vim.api.nvim_create_autocmd( { "BufFilePost", "BufRead", "BufNewFile", "BufWritePost" }, {
-    -- group = "softvisio",
-    desc = "softvisio: attach",
-    callback = function ( args )
-        local bufnr = args.buf
-
-        attach( bufnr )
-    end,
-} )
 
 M = {
     lint = function ( bufnr, action )
