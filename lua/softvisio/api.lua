@@ -1,4 +1,5 @@
 local client = require( "softvisio/client" )
+local config = require( "softvisio/config" )
 local utils = require( "softvisio/utils" )
 local types = {
     javascript = "text/javascript",
@@ -10,7 +11,7 @@ local types = {
 local M
 
 local function do_request ( bufnr, method, params )
-    local res, e = client.get().request_sync( method, params )
+    local res, e = client.get().request_sync( method, params, config.timeout )
 
     if not res then
         return
