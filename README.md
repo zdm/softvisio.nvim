@@ -16,9 +16,8 @@ npm install --global @softvisio/cli
 return {
     {
         "zdm/softvisio.nvim",
-        dev = true,
         dependencies = {
-            "trouble.nvim",
+            "folke/trouble.nvim",
         },
         lazy = false,
         cmd = "S",
