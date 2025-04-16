@@ -8,6 +8,25 @@ local M
 
 M = {
     setup = function ( options )
+        if not options then
+            options = {}
+        end
+
+        if options.hostname then
+            OPTIONS.hostname = options.hostname
+        end
+
+        if options.port then
+            OPTIONS.port = options.port
+        end
+
+        if options.auto_attach then
+            OPTIONS.auto_attach = options.auto_attach
+        end
+
+        if options.timeout then
+            OPTIONS.timeout = options.timeout
+        end
     end,
 }
 
