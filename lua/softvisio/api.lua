@@ -11,7 +11,11 @@ local types = {
 local M
 
 local function do_request ( bufnr, method, params )
-    local res, e = client.get().request_sync( method, params, config.timeout )
+    local c = client.get();
+
+    if not c then return end
+
+    local res, e = c.request_sync( method, params, config.timeout )
 
     if not res then
         return

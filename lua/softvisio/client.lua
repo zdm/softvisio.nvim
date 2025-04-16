@@ -1,7 +1,25 @@
 local config = require( "softvisio/config" )
+local utils = require( "softvisio/utils" )
 local server
 local client
 local M
+
+
+local function test_rpc ()
+    local channel
+
+    pcall( function ()
+        channel = vim.fn.sockconnect( "tcp", config.hostname .. ":" .. config.port )
+    end )
+
+    if not channel then
+        return false
+    else
+        vim.fn.chanclose( channel )
+
+        return true
+    end
+end
 
 -- XXX
 local function spawnLspServer ()
@@ -49,17 +67,21 @@ M = {
 
     get = function ()
         if not client then
-            client = vim.lsp.get_client_by_id( vim.lsp.start( {
-                name = "softvisio",
-                cmd = vim.lsp.rpc.connect( config.hostname, config.port ),
-                on_error = function ( code, e )
-                    if e == "ECONNRESET" then
-                        vim.lsp.stop_client( client.id, true )
+            if test_rpc() then
+                client = vim.lsp.get_client_by_id( vim.lsp.start( {
+                    name = "softvisio",
+                    cmd = vim.lsp.rpc.connect( config.hostname, config.port ),
+                    on_error = function ( code, e )
+                        if e == "ECONNRESET" then
+                            vim.lsp.stop_client( client.id, true )
 
-                        client = nil
+                            client = nil
+                        end
                     end
-                end
-            } ) )
+                } ) )
+            else
+                utils.echoe( "Unable to connect to the LSP RPC server" )
+            end
         end
 
         return client
