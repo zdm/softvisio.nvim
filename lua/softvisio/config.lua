@@ -12,20 +12,10 @@ M = {
             options = {}
         end
 
-        if options.hostname then
-            OPTIONS.hostname = options.hostname
-        end
-
-        if options.port then
-            OPTIONS.port = options.port
-        end
-
-        if options.auto_attach then
-            OPTIONS.auto_attach = options.auto_attach
-        end
-
-        if options.timeout then
-            OPTIONS.timeout = options.timeout
+        for key, value in pairs( OPTIONS ) do
+            if options[ key ] then
+                OPTIONS[ key ] = options[ key ]
+            end
         end
     end,
 }
