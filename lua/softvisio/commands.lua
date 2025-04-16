@@ -9,11 +9,11 @@ local function execute ( input )
 
     -- lint
     elseif input.fargs[ 1 ] == "lint" then
-        api.lint( 0, input.fargs[ 2 ] )
+        api.lint( input.fargs[ 2 ] )
 
     -- browser
     elseif input.fargs[ 1 ] == "browser" then
-        api.browser( 0 )
+        api.browser()
 
     -- invalid command
     else

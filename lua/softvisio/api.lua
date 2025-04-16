@@ -11,11 +11,11 @@ local types = {
 local M
 
 local function do_request ( bufnr, method, params )
-    local c = client.get();
+    local client = client.get();
 
-    if not c then return end
+    if not client then return end
 
-    local res, e = c.request_sync( method, params, config.timeout )
+    local res, e = client.request_sync( method, params, config.timeout )
 
     if not res then
         return
@@ -25,10 +25,8 @@ local function do_request ( bufnr, method, params )
 end
 
 M = {
-    lint = function ( bufnr, action )
-        if not bufnr or bufnr == 0 then
-            bufnr = vim.api.nvim_get_current_buf()
-        end
+    lint = function ( action )
+        local bufnr = vim.api.nvim_get_current_buf()
 
         if not action then
             action = "lint"
@@ -44,7 +42,7 @@ M = {
             return
         end
 
-        utils.echo( action .. ":  run source filter..." )
+        utils.echo( action .. ":  ..." )
 
         local res = do_request( bufnr, "softvisio/lint-file", {
             action = action,
@@ -124,10 +122,8 @@ M = {
 
     end,
 
-    browser = function ( bufnr )
-        if not bufnr or bufnr == 0 then
-            bufnr = vim.api.nvim_get_current_buf()
-        end
+    browser = function ()
+        local bufnr = vim.api.nvim_get_current_buf()
 
         local buffer = utils.get_buffer( bufnr )
 
