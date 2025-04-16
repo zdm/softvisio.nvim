@@ -23,7 +23,7 @@ M = {
     parseTreesitter = function ( bufnr, range )
         local parser = vim.treesitter.get_parser( bufnr )
 
-        -- XXX https://neovim.io/doc/user/treesitter.html#LanguageTree%3Aparse()
+        -- NOTE: https://neovim.io/doc/user/treesitter.html#LanguageTree%3Aparse()
         parser:parse( range )
     end,
 
@@ -71,6 +71,7 @@ M = {
         M.echo( message, "WarningMsg" )
     end,
 
+    -- XXX
     get_buffer = function ( bufnr )
         local eol = EOL[ vim.bo[ bufnr ].fileformat ]
         local buffer = vim.fn.join( vim.fn.getline( 1, "$" ), eol )
