@@ -21,31 +21,24 @@ local function test_rpc ()
     end
 end
 
--- XXX
-local function spawnLspServer ()
+local function spawn_Server ()
     if not server then
-
-        -- https://neovim.io/doc/user/lua.html#vim.system()
-        -- https://neovim.io/doc/user/luvref.html#uv.spawn()
-        -- https://neovim.io/doc/user/luvref.html#uv.tcp_connect()
-        local handle, pid = vim.uv.spawn(
-            vim.fn.has( "win32" ) == 1 and "softvisio-cli.cmd" or "softvisio-cli",
+        server = vim.system(
             {
-                args = { "lsp", "start" },
-                stdio = nil,
-                detached = false,
-                hide = true,
+                vim.fn.has( "win32" ) == 1 and "softvisio-cli.cmd" or "softvisio-cli",
+                "lsp",
+                "start",
+            },
+            {
+                stdin = false,
+                stdout = false,
+                stderr = false,
+                detach = true,
             },
             function ( code, signal )
-                vim.print( "---", code, signal )
-                LSP_SERVER = nil
+                server = nil
             end
         )
-
-        server = {
-            handle = handle,
-            pid = pid,
-        }
     end
 end
 
@@ -80,6 +73,8 @@ M = {
                     end
                 } ) )
             else
+                spawn_Server()
+
                 utils.echoe( "Unable to connect to the LSP RPC server" )
             end
         end
