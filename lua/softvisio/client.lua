@@ -1,9 +1,7 @@
 local config = require( "softvisio/config" )
 local utils = require( "softvisio/utils" )
-local server
 local client
 local M
-
 
 local function test_rpc ()
     local channel
@@ -22,13 +20,11 @@ local function test_rpc ()
 end
 
 local function spawn_Server ()
-    if not server then
-        local cmd = vim.fn.has( "win32" ) == 1 and "softvisio-cli.cmd" or "softvisio-cli"
+    local cmd = vim.fn.has( "win32" ) == 1 and "softvisio-cli.cmd" or "softvisio-cli"
 
-        server = vim.fn.jobstart( cmd .. " lsp start", {
-            detach = false,
-        } )
-    end
+    server = vim.fn.jobstart( cmd .. " lsp start", {
+        detach = false,
+    } )
 end
 
 M = {
@@ -62,9 +58,9 @@ M = {
                     end
                 } ) )
             else
-                spawn_Server()
+                utils.echoe( "Spawn LSP RPC server" )
 
-                utils.echoe( "Unable to connect to the LSP RPC server" )
+                spawn_Server()
             end
         end
 
