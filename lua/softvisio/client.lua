@@ -52,8 +52,8 @@ M = {
             client = vim.lsp.get_client_by_id( vim.lsp.start( {
                 name = "softvisio",
                 cmd = vim.lsp.rpc.connect( config.hostname, config.port ),
-                on_error = function ( code, err )
-                    if err == "ECONNRESET" then
+                on_error = function ( code, e )
+                    if e == "ECONNRESET" then
                         vim.lsp.stop_client( client.id, true )
 
                         client = nil

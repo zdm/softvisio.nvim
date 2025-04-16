@@ -10,7 +10,7 @@ local types = {
 local M
 
 local function do_request ( bufnr, method, params )
-    local res = client.get().request_sync( method, params )
+    local res, e = client.get().request_sync( method, params )
 
     if not res then
         return
