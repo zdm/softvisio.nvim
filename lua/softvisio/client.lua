@@ -23,22 +23,43 @@ end
 
 local function spawn_Server ()
     if not server then
-        server = vim.system(
+        local handle, pid = vim.uv.spawn(
+            vim.fn.has( "win32" ) == 1 and "softvisio-cli.cmd" or "softvisio-cli",
             {
-                vim.fn.has( "win32" ) == 1 and "softvisio-cli.cmd" or "softvisio-cli",
-                "lsp",
-                "start",
-            },
-            {
-                stdin = false,
-                stdout = false,
-                stderr = false,
-                detach = true,
+                args = { "lsp", "start" },
+                stdio = { nil, nil, nil },
+                verbatim = true,
+                detached = true,
+                hide = true,
             },
             function ( code, signal )
                 server = nil
             end
         )
+
+        if pid then
+            server = {
+                handle = handle,
+                pid = pid,
+            }
+        end
+
+        -- server = vim.system(
+        --     {
+        --         vim.fn.has( "win32" ) == 1 and "softvisio-cli.cmd" or "softvisio-cli",
+        --         "lsp",
+        --         "start",
+        --     },
+        --     {
+        --         stdin = false,
+        --         stdout = false,
+        --         stderr = false,
+        --         detach = true,
+        --     },
+        --     function ( code, signal )
+        --         server = nil
+        --     end
+        -- )
     end
 end
 
