@@ -6,7 +6,7 @@ local EOL = {
 local M
 
 M = {
-    hasTreesitter = function ( bufnr )
+    has_treesitter = function ( bufnr )
         if not bufnr then
             bufnr = vim.api.nvim_get_current_buf()
         end
@@ -20,14 +20,14 @@ M = {
         end
     end,
 
-    parseTreesitter = function ( bufnr, range )
+    parse_treesitter = function ( bufnr, range )
         local parser = vim.treesitter.get_parser( bufnr )
 
         -- NOTE: https://neovim.io/doc/user/treesitter.html#LanguageTree%3Aparse()
         parser:parse( range )
     end,
 
-    setDiagnostic = function ( bufnr, diagnostic )
+    set_diagnostic = function ( bufnr, diagnostic )
         local namespace = vim.api.nvim_create_namespace( "softvisio" )
 
         -- vim.diagnostic.config( options, namespace )

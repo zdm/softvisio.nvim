@@ -75,8 +75,8 @@ M = {
             vim.api.nvim_buf_set_lines( bufnr, 0, #lines, false, lines )
 
             -- refresh treesitter, if used
-            if utils.hasTreesitter() then
-                utils.parseTreesitter()
+            if utils.has_treesitter() then
+                utils.parse_treesitter()
             end
 
             -- refresh syntax, if used
@@ -98,7 +98,7 @@ M = {
         end
 
         -- update diagnostics
-        utils.setDiagnostic( 0, res.meta.diagnostic )
+        utils.set_diagnostic( 0, res.meta.diagnostic )
 
         --  parsing error
         if res.meta.parsingError then
