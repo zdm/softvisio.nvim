@@ -105,7 +105,6 @@ M = {
             utils.echoe( action .. ": " .. res.status_text )
 
             require( "trouble" ).open( "diagnostics" )
-            require( "trouble" ).focus()
 
         -- errors
         elseif res.meta.hasErrors then

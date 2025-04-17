@@ -76,10 +76,9 @@ M = {
         local buffer = vim.fn.join( vim.fn.getline( 1, "$" ), eol )
 
         if buffer ~= "" then
-            local insert_final_newline = vim.b[ bufnr ].editorconfig.insert_final_newline
 
             -- add final newline
-            if not insert_final_newline or insert_final_newline == "true" then
+            if not vim.b[ bufnr ].editorconfig or not vim.b[ bufnr ].editorconfig.insert_final_newline or vim.b[ bufnr ].editorconfig.insert_final_newline == "true" then
                 buffer = buffer .. eol
             end
         end
