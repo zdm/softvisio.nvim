@@ -42,6 +42,12 @@ M = {
             return
         end
 
+        if vim.bo[ bufnr ].readonly then
+            utils.echo( "Buffer is read only", "Comment" )
+
+            return
+        end
+
         -- buffer is empty
         if buffer == "" then
             utils.echo( "Buffer is empty", "Comment" )
