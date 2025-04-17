@@ -18,6 +18,15 @@ M = {
                 OPTIONS[ key ] = options[ key ]
             end
         end
+
+        -- prepare disabled_filetypes
+        local disabled_filetypes = {};
+
+        for _, value in pairs( OPTIONS.disabled_filetypes ) do
+            disabled_filetypes[ value ] = true
+        end
+
+        OPTIONS.disabled_filetypes = disabled_filetypes
     end,
 }
 

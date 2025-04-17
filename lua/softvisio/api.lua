@@ -35,6 +35,13 @@ M = {
         local winid = vim.fn.bufwinid( bufnr )
         local buffer = utils.get_buffer( bufnr )
 
+        -- buffer filetype is ignored
+        if config.disabled_filetypes[ vim.bo[ bufnr ].filetype ] then
+            utils.echo( "Buffer is ignored", "Comment" )
+
+            return
+        end
+
         -- buffer is empty
         if buffer == "" then
             utils.echo( "Buffer is empty", "Comment" )
