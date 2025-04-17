@@ -53,7 +53,7 @@ return {
                 port = 55556,
                 auto_attach = false,
                 timeout = 60000,
-                disabled_filetypes = {
+                ignored_filetypes = {
                     "help",
                     "man",
                     "trouble",

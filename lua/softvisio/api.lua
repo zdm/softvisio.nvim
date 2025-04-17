@@ -36,7 +36,7 @@ M = {
         local buffer = utils.get_buffer( bufnr )
 
         -- buffer filetype is ignored
-        if config.disabled_filetypes[ vim.bo[ bufnr ].filetype ] then
+        if config.ignored_filetypes[ vim.bo[ bufnr ].filetype ] then
             utils.echo( "Buffer is ignored", "Comment" )
 
             return

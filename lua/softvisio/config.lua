@@ -3,7 +3,7 @@ local OPTIONS = {
     port = 55556,
     auto_attach = false,
     timeout = 60000,
-    disabled_filetypes = {},
+    ignored_filetypes = {},
 }
 local M
 
@@ -19,14 +19,14 @@ M = {
             end
         end
 
-        -- prepare disabled_filetypes
-        local disabled_filetypes = {};
+        -- prepare ignored_filetypes
+        local ignored_filetypes = {};
 
-        for _, value in pairs( OPTIONS.disabled_filetypes ) do
-            disabled_filetypes[ value ] = true
+        for _, value in pairs( OPTIONS.ignored_filetypes ) do
+            ignored_filetypes[ value ] = true
         end
 
-        OPTIONS.disabled_filetypes = disabled_filetypes
+        OPTIONS.ignored_filetypes = ignored_filetypes
     end,
 }
 
