@@ -3,6 +3,7 @@ local OPTIONS = {
     port = 55556,
     auto_attach = false,
     timeout = 60000,
+    disabled_filetypes = {},
 }
 local M
 
