@@ -113,8 +113,8 @@ M = {
         -- update diagnostics
         utils.set_diagnostic( 0, res.meta.diagnostic )
 
-        --  parsing error
-        if fatalError then
+        --  fatal error
+        if res.meta.fatalError then
             utils.echoe( action .. ": " .. res.status_text )
 
             require( "trouble" ).open( "diagnostics" )
