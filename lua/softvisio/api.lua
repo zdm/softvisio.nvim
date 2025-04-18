@@ -114,7 +114,7 @@ M = {
         utils.set_diagnostic( 0, res.meta.diagnostic )
 
         --  parsing error
-        if res.meta.parsingError then
+        if fatalError then
             utils.echoe( action .. ": " .. res.status_text )
 
             require( "trouble" ).open( "diagnostics" )
