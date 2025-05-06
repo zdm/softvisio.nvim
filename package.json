@@ -3,7 +3,7 @@
     "version": "0.0.0",
     "private": true,
     "description": "@softvisio/cli LSP Neovim integration",
-    "homepage": "https://github.com/zdm/dotfiles-public",
+    "homepage": "https://github.com/zdm/softvisio.nvim",
     "bugs": {
         "url": "https://github.com/zdm/softvisio.nvim/issues",
         "email": "root <root@softvisio.net>"
