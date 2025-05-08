@@ -5,7 +5,7 @@ local EOL = {
     mac = "\r",
 }
 local error_level_hl = {
-    default = "Comment",
+    info = "Comment",
     error = "ErrorMsg",
     warning = "WarningMsg",
 }
@@ -70,9 +70,9 @@ M = {
                 end,
             } ).id
         else
-            vim.cmd( "silent! redraw" )
+            vim.cmd( "redraw" )
 
-            local hl = error_level_hl[ level or "default" ]
+            local hl = error_level_hl[ level ]
 
             if hl then
                 vim.cmd.echohl( hl )
@@ -91,7 +91,7 @@ M = {
     end,
 
     echoc = function ( message )
-        M.echo( message )
+        M.echo( message, "info" )
     end,
 
     echoe = function ( message )
