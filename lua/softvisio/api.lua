@@ -131,7 +131,6 @@ M = {
         else
             utils.echoc( action .. ": " .. res.status_text )
         end
-
     end,
 
     browser = function ()

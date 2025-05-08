@@ -50,6 +50,8 @@ M = {
     end,
 
     echo = function ( message, level )
+        vim.cmd.stopinsert()
+
         notification_id = notify( message, level, {
             replace = notification_id,
             on_close = function ()
