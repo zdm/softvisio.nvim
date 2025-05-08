@@ -3,6 +3,10 @@ local EOL = {
     dos = "\r\n",
     mac = "\r",
 }
+local notify = require( "notify" ).instance( {
+    render = "compact",
+}, true );
+local notification_id
 local M
 
 M = {
@@ -45,30 +49,26 @@ M = {
         end
     end,
 
-    echo = function ( message, hl )
-        vim.cmd( "silent! redraw" )
+    echo = function ( message, level )
+        notification_id = notify( message, level, {
+            replace = notification_id,
+        } ).id
+    end,
 
-        if hl then
-            vim.cmd.echohl( hl )
-        end
-
-        vim.cmd.echo( '"' .. message .. '"' )
-
-        if hl then
-            vim.cmd.echohl( "None" )
-        end
+    dismiss = function ()
+        notify.dismiss()
     end,
 
     echoc = function ( message )
-        M.echo( message, "Comment" )
+        M.echo( message )
     end,
 
     echoe = function ( message )
-        M.echo( message, "ErrorMsg" )
+        M.echo( message, "error" )
     end,
 
     echow = function ( message )
-        M.echo( message, "WarningMsg" )
+        M.echo( message, "warning" )
     end,
 
     get_buffer = function ( bufnr )

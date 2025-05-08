@@ -17,6 +17,7 @@ return {
     {
         "zdm/softvisio.nvim",
         dependencies = {
+            "rcarriga/nvim-notify",
             "folke/trouble.nvim",
         },
         cmd = "S",
