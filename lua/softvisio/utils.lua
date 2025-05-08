@@ -3,6 +3,11 @@ local EOL = {
     dos = "\r\n",
     mac = "\r",
 }
+local error_level_hl = {
+    default = "Comment",
+    error = "ErrorMsg",
+    warning = "WarningMsg",
+}
 local notify
 local notification_id
 local M
@@ -56,12 +61,28 @@ M = {
     echo = function ( message, level )
         vim.cmd.stopinsert()
 
-        notification_id = notify( message, level, {
-            replace = notification_id,
-            on_close = function ()
-                notification_id = nil
-            end,
-        } ).id
+        if notify then
+            notification_id = notify( message, level, {
+                replace = notification_id,
+                on_close = function ()
+                    notification_id = nil
+                end,
+            } ).id
+        else
+            vim.cmd( "silent! redraw" )
+
+            local hl = error_level_hl[ level or "default" ]
+
+            if hl then
+                vim.cmd.echohl( hl )
+            end
+
+            vim.cmd.echo( '"' .. message .. '"' )
+
+            if hl then
+                vim.cmd.echohl( "None" )
+            end
+        end
     end,
 
     dismiss = function ()
