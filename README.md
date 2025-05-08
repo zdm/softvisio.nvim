@@ -19,30 +19,29 @@ return {
         dependencies = {
             "folke/trouble.nvim",
         },
-        lazy = false,
         cmd = "S",
         keys = {
             {
-                "<leader>sd",
-                "<esc>:S lint format<cr>",
+                "<Leader>sd",
+                "<CMD>S lint format<cr>",
                 mode = { "n", "i", "v", "s" },
                 desc = "Lint buffer using default rules",
             },
             {
-                "<leader>sf",
-                "<esc>:S lint lint<cr>",
+                "<Leader>sf",
+                "<CMD>S lint lint<cr>",
                 mode = { "n", "i", "v", "s" },
                 desc = "Lint buffer",
             },
             {
-                "<leader>sc",
-                "<esc>:S lint compress<cr>",
+                "<Leader>sc",
+                "<CMD>S lint compress<cr>",
                 mode = { "n", "i", "v", "s" },
                 desc = "Compress buffer",
             },
             {
-                "<leader>so",
-                "<esc>:S lint obfuscate<cr>",
+                "<Leader>so",
+                "<CMD>S lint obfuscate<cr>",
                 mode = { "n", "i", "v", "s" },
                 desc = "Obfuscate buffer",
             },
@@ -54,11 +53,11 @@ return {
                 auto_attach = false,
                 timeout = 60000,
                 ignored_filetypes = {
+                    "DiffviewFileHistory",
+                    "DiffviewFiles",
+                    "gitgraph",
                     "help",
-                    "man",
                     "trouble",
-                    "unite",
-                    "undotree",
                 },
             } )
         end
