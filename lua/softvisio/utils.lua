@@ -3,11 +3,15 @@ local EOL = {
     dos = "\r\n",
     mac = "\r",
 }
-local notify = require( "notify" ).instance( {
-    render = "compact", -- "minimal",
-}, true );
+local notify
 local notification_id
 local M
+
+pcall( function ()
+    notify = require( "notify" ).instance( {
+        render = "compact", -- "minimal",
+    }, true )
+end )
 
 M = {
     has_treesitter = function ( bufnr )
