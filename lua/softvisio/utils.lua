@@ -4,7 +4,7 @@ local EOL = {
     mac = "\r",
 }
 local notify = require( "notify" ).instance( {
-    render = "compact",
+    render = "compact", -- "minimal",
 }, true );
 local notification_id
 local M
@@ -52,6 +52,9 @@ M = {
     echo = function ( message, level )
         notification_id = notify( message, level, {
             replace = notification_id,
+            on_close = function ()
+                notification_id = nil
+            end,
         } ).id
     end,
 
