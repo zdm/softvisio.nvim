@@ -9,15 +9,7 @@ local error_level_hl = {
     error = "ErrorMsg",
     warning = "WarningMsg",
 }
-local notify
-local notification_id
 local M
-
-pcall( function ()
-    notify = require( "notify" ).instance( {
-        render = "compact", -- "minimal",
-    }, true )
-end )
 
 M = {
     has_treesitter = function ( bufnr )
@@ -60,32 +52,19 @@ M = {
     end,
 
     echo = function ( message, level )
-        if notify and config.use_notify then
-            notification_id = notify( message, level, {
-                replace = notification_id,
-                on_close = function ()
-                    notification_id = nil
-                end,
-            } ).id
-        else
-            vim.cmd( "redraw" )
+        vim.cmd( "redraw" )
 
-            local hl = error_level_hl[ level ]
+        local hl = error_level_hl[ level ]
 
-            if hl then
-                vim.cmd.echohl( hl )
-            end
-
-            vim.cmd.echo( '"' .. message .. '"' )
-
-            if hl then
-                vim.cmd.echohl( "None" )
-            end
+        if hl then
+            vim.cmd.echohl( hl )
         end
-    end,
 
-    dismiss = function ()
-        notify.dismiss()
+        vim.cmd.echo( '"' .. message .. '"' )
+
+        if hl then
+            vim.cmd.echohl( "None" )
+        end
     end,
 
     echoc = function ( message )

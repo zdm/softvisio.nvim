@@ -4,7 +4,6 @@ local OPTIONS = {
     auto_attach = false,
     timeout = 60000,
     ignored_filetypes = {},
-    use_notify = false,
 }
 local M
 
