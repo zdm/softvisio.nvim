@@ -1,3 +1,4 @@
+local config = require( "softvisio/config" )
 local EOL = {
     unix = "\n",
     dos = "\r\n",
@@ -61,7 +62,7 @@ M = {
     echo = function ( message, level )
         vim.cmd.stopinsert()
 
-        if notify then
+        if notify and config.use_notify then
             notification_id = notify( message, level, {
                 replace = notification_id,
                 on_close = function ()

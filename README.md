@@ -60,6 +60,7 @@ return {
                     "help",
                     "trouble",
                 },
+                use_notify = false,
             } )
         end
     }
