@@ -24,25 +24,25 @@ return {
         keys = {
             {
                 "<Leader>sd",
-                "<CMD>S lint format<cr>",
+                "<CMD>S lint format<CR>",
                 mode = { "n", "i", "v", "s" },
                 desc = "Lint buffer using default rules",
             },
             {
                 "<Leader>sf",
-                "<CMD>S lint lint<cr>",
+                "<CMD>S lint lint<CR>",
                 mode = { "n", "i", "v", "s" },
                 desc = "Lint buffer",
             },
             {
                 "<Leader>sc",
-                "<CMD>S lint compress<cr>",
+                "<CMD>S lint compress<CR>",
                 mode = { "n", "i", "v", "s" },
                 desc = "Compress buffer",
             },
             {
                 "<Leader>so",
-                "<CMD>S lint obfuscate<cr>",
+                "<CMD>S lint obfuscate<CR>",
                 mode = { "n", "i", "v", "s" },
                 desc = "Obfuscate buffer",
             },
