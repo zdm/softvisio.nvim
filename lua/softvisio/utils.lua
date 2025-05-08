@@ -60,8 +60,6 @@ M = {
     end,
 
     echo = function ( message, level )
-        vim.cmd.stopinsert()
-
         if notify and config.use_notify then
             notification_id = notify( message, level, {
                 replace = notification_id,

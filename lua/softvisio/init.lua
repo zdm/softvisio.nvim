@@ -1,5 +1,7 @@
 local M
 
+vim.o.showmode = false
+
 M = {
     setup = function ( options )
         require( "softvisio/config" ).setup( options )
