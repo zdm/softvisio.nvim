@@ -26,6 +26,8 @@ end
 
 M = {
     lint = function ( action )
+        vim.cmd.stopinsert()
+
         local bufnr = vim.api.nvim_get_current_buf()
 
         if not action then
