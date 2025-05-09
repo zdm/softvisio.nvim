@@ -37,24 +37,6 @@ M = {
         parser:parse( range )
     end,
 
-    set_diagnostic = function ( bufnr, diagnostic )
-        local namespace = vim.api.nvim_create_namespace( "softvisio" )
-
-        -- vim.diagnostic.config( options, namespace )
-
-        if diagnostic == nil then
-            vim.diagnostic.reset( namespace, bufnr )
-
-            M.close_diagnostics()
-        else
-            for index, value in ipairs( diagnostic ) do
-                value.severity = vim.diagnostic.severity[ value.severity ]
-            end
-
-            vim.diagnostic.set( namespace, bufnr, diagnostic )
-        end
-    end,
-
     echo = function ( message, level )
         vim.cmd( "redraw" )
 
@@ -98,17 +80,35 @@ M = {
         return buffer
     end,
 
+    set_diagnostic = function ( bufnr, diagnostic )
+        local namespace = vim.api.nvim_create_namespace( "softvisio" )
+
+        -- vim.diagnostic.config( options, namespace )
+
+        if diagnostic == nil then
+            vim.diagnostic.reset( namespace, bufnr )
+
+            M.close_diagnostics()
+        else
+            for index, value in ipairs( diagnostic ) do
+                value.severity = vim.diagnostic.severity[ value.severity ]
+            end
+
+            vim.diagnostic.set( namespace, bufnr, diagnostic )
+        end
+    end,
+
     open_diagnostics = function ()
-        if not trouble then return
+        if not trouble then return end
 
         trouble.open( "diagnostics" )
-    end
+    end,
 
     close_diagnostics = function ()
-        if not trouble then return
+        if not trouble then return end
 
         trouble.close( "diagnostics" );
-    end
+    end,
 }
 
 return M
