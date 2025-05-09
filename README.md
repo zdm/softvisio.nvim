@@ -57,6 +57,7 @@ return {
                     "DiffviewFiles",
                     "gitgraph",
                     "help",
+                    "man",
                     "TelescopePrompt",
                 },
             } )
