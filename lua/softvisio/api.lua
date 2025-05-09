@@ -119,7 +119,7 @@ M = {
         if res.meta.isFatalError then
             utils.echoe( action .. ": " .. res.status_text )
 
-            require( "trouble" ).open( "diagnostics" )
+            utils.open_diagnostics()
 
         -- errors
         elseif res.meta.hasErrors then

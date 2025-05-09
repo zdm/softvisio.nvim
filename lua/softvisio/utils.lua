@@ -1,4 +1,3 @@
-local config = require( "softvisio/config" )
 local EOL = {
     unix = "\n",
     dos = "\r\n",
@@ -9,7 +8,12 @@ local error_level_hl = {
     error = "ErrorMsg",
     warning = "WarningMsg",
 }
+local trouble
 local M
+
+pcall( function()
+    trouble = require( "trouble" )
+end )
 
 M = {
     has_treesitter = function ( bufnr )
@@ -41,7 +45,7 @@ M = {
         if diagnostic == nil then
             vim.diagnostic.reset( namespace, bufnr )
 
-            require( "trouble" ).close( "diagnostics" );
+            M.close_diagnostics()
         else
             for index, value in ipairs( diagnostic ) do
                 value.severity = vim.diagnostic.severity[ value.severity ]
@@ -93,6 +97,18 @@ M = {
 
         return buffer
     end,
+
+    open_diagnostics = function ()
+        if not trouble then return
+
+        trouble.open( "diagnostics" )
+    end
+
+    close_diagnostics = function ()
+        if not trouble then return
+
+        trouble.close( "diagnostics" );
+    end
 }
 
 return M
