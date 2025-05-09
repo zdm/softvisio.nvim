@@ -8,12 +8,7 @@ local error_level_hl = {
     error = "ErrorMsg",
     warning = "WarningMsg",
 }
-local trouble
 local M
-
-pcall( function()
-    trouble = require( "trouble" )
-end )
 
 M = {
     has_treesitter = function ( bufnr )
@@ -87,8 +82,6 @@ M = {
 
         if diagnostic == nil then
             vim.diagnostic.reset( namespace, bufnr )
-
-            M.close_diagnostics()
         else
             for index, value in ipairs( diagnostic ) do
                 value.severity = vim.diagnostic.severity[ value.severity ]
@@ -99,15 +92,7 @@ M = {
     end,
 
     open_diagnostics = function ()
-        if not trouble then return end
-
-        trouble.open( "diagnostics" )
-    end,
-
-    close_diagnostics = function ()
-        if not trouble then return end
-
-        trouble.close( "diagnostics" );
+        vim.cmd( "Telescope diagnostics" );
     end,
 }
 

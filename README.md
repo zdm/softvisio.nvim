@@ -17,7 +17,7 @@ return {
     {
         "zdm/softvisio.nvim",
         dependencies = {
-            "folke/trouble.nvim",
+            "nvim-telescope/telescope.nvim",
         },
         cmd = "S",
         keys = {
@@ -57,7 +57,7 @@ return {
                     "DiffviewFiles",
                     "gitgraph",
                     "help",
-                    "trouble",
+                    "TelescopePrompt",
                 },
             } )
         end
