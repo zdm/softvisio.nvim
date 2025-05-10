@@ -92,7 +92,9 @@ M = {
     end,
 
     open_diagnostics = function ()
-        vim.cmd( "Telescope diagnostics" );
+        if vim.fn.exists( ":Telescope" ) > 0 then
+            vim.cmd( "Telescope diagnostics" );
+        end
     end,
 }
 
