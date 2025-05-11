@@ -93,7 +93,9 @@ M = {
 
     open_diagnostics = function ()
         if vim.fn.exists( ":Telescope" ) > 0 then
-            vim.cmd( "Telescope diagnostics" );
+            local namespace = vim.api.nvim_create_namespace( "softvisio" )
+
+            vim.cmd( "Telescope diagnostics bufnr=0 namespace=" .. namespace );
         end
     end,
 }
